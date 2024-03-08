@@ -1,0 +1,100 @@
+.main-container {
+    text-align: center;
+    
+  }
+  
+  .search {
+    margin-top: 20px;
+  }
+  
+  .search label,
+  .search input,
+  .search button {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  
+  .data-container {
+    margin-top: 25px;
+    display: grid;
+    grid-template-areas: 
+        "watchlist general details"
+        "watchlist general details"
+        "watchlist analytics analytics";
+    grid-template-columns: 1fr 2fr 2fr;
+    gap:20px;
+  
+    max-width: 2000px; 
+    margin-left: auto; 
+    margin-right: auto;
+  }
+  
+  .watchlist{
+    grid-area: watchlist;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .general-information{
+    grid-area: general;
+  }
+  .stock-details{
+    grid-area: details;
+  }
+  .analysts-opinion{
+    grid-area: analytics;
+  }
+  
+  .general-information,
+  .stock-details,
+  .analysts-opinion,
+  .watchlist {
+    border: 1px solid black;
+    padding-bottom: 35px;
+  }
+
+  
+
+
+
+.bar-chart {
+    position: relative;
+    height: 40px;
+    background-color: lightgray;
+    margin-top: 20px;
+    width: 1000px;
+  
+    margin-left: auto;
+    margin-right: auto;
+    /* Center the bar-chart horizontally */
+    margin-top: 50px;
+  }
+  
+  .bar {
+    position: absolute;
+    height: 100%;
+    background-color: green;
+  }
+  
+  .label {
+    position: absolute;
+    transform: translateX(-50%);
+    top: 100%;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  
+  .label-median {
+    position: absolute;
+    transform: translateX(-50%);
+    top: -90%;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  
+  .label-current {
+    position: absolute;
+    transform: translateY(-50%) translateX(-50%);
+    top: 50%;
+    font-size: 13px;
+    font-weight: bold;
+  }

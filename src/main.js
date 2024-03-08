@@ -1,4 +1,5 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import StockSearch from './components/StockSearch.vue';
 
-createApp(App).mount('#app')
+createApp(StockSearch).mount('#app');
+
