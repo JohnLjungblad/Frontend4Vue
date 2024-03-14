@@ -5,11 +5,11 @@
     <div class="search">
       <label>
         Enter a US Stock Name:
-        <input v-model="stockName" @keyup.enter="handleSearch"/>
+        <input v-model="stockName" @keyup.enter="handleSearch" class="main-input"/>
       </label>
       <button @click="handleSearch">Search</button>
 
-      <button v-if="searchMade && watchlistDuplicate" @click="addToWatchlist"> Add to watchlist</button>
+      <button v-if="searchMade && watchlistDuplicate" @click="addToWatchlist" class="watchlist-button"> Add to watchlist</button>
     </div>
     <div v-if="loading" class="loading">Loading
       <span>.</span>
@@ -23,8 +23,8 @@
           <h3>Watchlist</h3>
           <div v-if="watchlist.length > 0">
             <li v-for="(item, index) in watchlist" :key="index" class="watchlist-list">
-              {{ item.symbol }} - ${{ item.stockPrice.toFixed(2) }} <button
-                @click="removeFromWatchlist(item.symbol)">❌</button>
+              {{ item.symbol }} - ${{ item.stockPrice.toFixed(2) }} 
+              <button @click="removeFromWatchlist(item.symbol)" class="watchlist-remove-button">❌</button>
             </li>
           </div>
         </section>

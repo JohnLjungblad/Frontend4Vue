@@ -1,8 +1,4 @@
 export default {
-    created() {
-        // Call the UpdateWatchListPrices() function every 10 seconds
-
-    },
     data() {
         const apiKey = '868c0c8721msh6a1ce74715ec254p133b1cjsn70daf7be0daf';
 
@@ -13,8 +9,8 @@ export default {
                 'X-RapidAPI-Host': 'yahoo-finance127.p.rapidapi.com',
             },
         };
-
-        const axlOptions = {
+        //Options for API 2
+        const options2 = {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -23,10 +19,8 @@ export default {
 
         return {
             stockName: '',
-            // First call
             sector: '',
             symbol: '',
-            // Second call
             ebitda: null,
             analystRecommendations: '',
             analystRecommendationKey: null,
@@ -35,36 +29,28 @@ export default {
             recommendationMedian: null,
             recommendationHigh: null,
             numberOfOpinions: null,
-            // Third call
             stockPrice: null,
             outstandingShares: null,
-            // Fourth call
             peRatio: null,
-            // Calculations
             enterpriseValue: null,
             valueMultiple: null,
             analystScore: 0,
-            // Watchlist
             watchlist: [],
             watchlistButtonDisabled: false,
             watchlistDuplicate: true,
-
             searchMade: false,
             loading: false,
-
+            //URLs for API 1
             searchUrl: 'https://yahoo-finance127.p.rapidapi.com/search/',
             financeUrl: 'https://yahoo-finance127.p.rapidapi.com/finance-analytics/',
             priceUrl: 'https://yahoo-finance127.p.rapidapi.com/price/',
             keyStatsUrl: 'https://yahoo-finance127.p.rapidapi.com/key-statistics/',
-
-            johnUrl: 'https://axlstockapi.azurewebsites.net/stock/price/',
+            //URL for API 2
+            stockUrl: 'https://axlstockapi.azurewebsites.net/stock/price/',
 
             options: options,
-            axlOptions: axlOptions,
+            options2: options2,
         };
-    },
-    computed: {
-        // Your computed properties
     },
     methods: {
         updateWatchlistButton() {
@@ -92,11 +78,11 @@ export default {
                 //Watchlist check
                 this.watchlistDuplicate = false;
             }
-            //We know that the button has been pressed at least once
+            //We know that the button has been pressed at least once, start updating watchlist prices
             this.intervalId = setInterval(() => {
                 this.UpdateWatchListPrices();
-            }, 30000);
-
+            }, 15000);
+            
         },
 
         async handleSearch() {
@@ -166,19 +152,21 @@ export default {
             this.valueMultiple = this.enterpriseValue / this.ebitda;
         },
 
-        //Simple price api called every 10 seconds for watchlist
+        //Simple price api called every 15 seconds for watchlist
         async UpdateWatchListPrices() {
             for (const element of this.watchlist) {
                 try {
-                    let axlUrl = "https://axlstockapi.azurewebsites.net/stock/price/" + element.symbol;
+                    let stockUrl = "https://axlstockapi.azurewebsites.net/stock/price/" + element.symbol;
 
 
-                    const priceApiResponse = await fetch(axlUrl, this.axlOptions);
+                    const priceApiResponse = await fetch(stockUrl, this.options2);
                     const priceApiResult = await priceApiResponse.json();
 
                     let updatedPrice = priceApiResult.googlePriceData.marketPrice;
 
+
                     element.stockPrice = updatedPrice;
+                    
                     console.log(updatedPrice);
 
                 } catch (error) {
