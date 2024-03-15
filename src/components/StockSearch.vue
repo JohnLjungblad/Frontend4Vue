@@ -5,11 +5,12 @@
     <div class="search">
       <label>
         Enter a US Stock Name:
-        <input v-model="stockName" @keyup.enter="handleSearch" class="main-input"/>
+        <input v-model="stockName" @keyup.enter="handleSearch" class="main-input" />
       </label>
       <button @click="handleSearch">Search</button>
 
-      <button v-if="searchMade && watchlistDuplicate" @click="addToWatchlist" class="watchlist-button"> Add to watchlist</button>
+      <button v-if="searchMade && watchlistDuplicate" @click="addToWatchlist" class="watchlist-button"> Add to
+        watchlist</button>
     </div>
     <div v-if="loading" class="loading">Loading
       <span>.</span>
@@ -23,7 +24,7 @@
           <h3>Watchlist</h3>
           <div v-if="watchlist.length > 0">
             <li v-for="(item, index) in watchlist" :key="index" class="watchlist-list">
-              {{ item.symbol }} - ${{ item.stockPrice.toFixed(2) }} 
+              {{ item.symbol }} - ${{ item.stockPrice.toFixed(2) }}
               <button @click="removeFromWatchlist(item.symbol)" class="watchlist-remove-button">❌</button>
             </li>
           </div>
@@ -38,7 +39,9 @@
         <section class="stock-details">
           <h3>Details</h3>
           <p>{{ symbol }} is valued at <strong>{{ valueMultiple.toFixed(2) }}</strong> times EBITDA</p>
-          <p>PE ratio: <strong>{{ peRatio.toFixed(2) }} 0 can mean minus</strong></p>
+          <p v-if="peRatio !== 0 && peRatio !== null">PE ratio: <strong>{{ peRatio.toFixed(2) }}</strong></p>
+          <p v-else>PE ratio: <strong>N/A</strong></p>
+
         </section>
 
         <section class="analysts-opinion" v-if="numberOfOpinions > 0">

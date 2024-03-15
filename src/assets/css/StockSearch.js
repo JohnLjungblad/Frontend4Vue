@@ -41,12 +41,10 @@ export default {
             searchMade: false,
             loading: false,
             //URLs for API 1
-            searchUrl: 'https://yahoo-finance127.p.rapidapi.com/search/',
             financeUrl: 'https://yahoo-finance127.p.rapidapi.com/finance-analytics/',
-            priceUrl: 'https://yahoo-finance127.p.rapidapi.com/price/',
-            keyStatsUrl: 'https://yahoo-finance127.p.rapidapi.com/key-statistics/',
-            //URL for API 2
-            stockUrl: 'https://axlstockapi.azurewebsites.net/stock/price/',
+            //URLs for API 2
+            johnApiUrl: 'https://axlstockapi.azurewebsites.net/stock/',
+
 
             options: options,
             options2: options2,
@@ -86,20 +84,18 @@ export default {
         },
 
         async handleSearch() {
-            this.loading = true;
+            this.loading = true; //While api calls and other functions are running
             try {
                 Promise.all([
                     await this.firstApiCall(),
                     await this.secondApiCall(),
-                    await this.thirdApiCall(),
-                    await this.fourthApiCall(),
                     this.calculateMultiple(),
                     this.searchMade = true,
 
                     this.updateWatchlistButton(),
 
                 ]).then(() => {
-                    // All API calls completed
+                    // All API calls completed - loading done
                     this.loading = false;
                 });
 
@@ -107,19 +103,23 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
-        async firstApiCall() {
-            const firstApiUrl = this.searchUrl + this.stockName;
+        async firstApiCall(){
+            const firstApiUrl = this.johnApiUrl + this.stockName;
             const response = await fetch(firstApiUrl, this.options);
             const result = await response.json();
-            this.sector = result.quotes[0].sector;
-            this.symbol = result.quotes[0].symbol;
 
+            this.sector = result.yahooProfileData.sector;
+            this.symbol = result.symbolFromCheck;
+            this.stockPrice = result.googleDefaultData.marketPrice;
+            this.outstandingShares = result.yahooKeyStatistics.sharesOutstanding;
+            this.peRatio = result.yahooKeyStatistics.trailingPE;
+            this.ebitda = result.yahooKeyStatistics.ebitda;            
         },
+        
         async secondApiCall() {
             const secondApiUrl = this.financeUrl + this.symbol;
             const secondResponse = await fetch(secondApiUrl, this.options);
             const secondResult = await secondResponse.json();
-            this.ebitda = secondResult.ebitda.raw;
             this.analystRecommendations = secondResult.recommendationMean.raw;
             this.analystRecommendationKey = secondResult.recommendationKey;
             this.recommendationLow = secondResult.targetLowPrice.raw;
@@ -129,24 +129,7 @@ export default {
             this.numberOfOpinions = secondResult.numberOfAnalystOpinions.raw;
 
         },
-        async thirdApiCall() {
-            const thirdApiUrl = this.priceUrl + this.symbol;
-            const thirdResponse = await fetch(thirdApiUrl, this.options);
-            const thirdResult = await thirdResponse.json();
-            this.stockPrice = thirdResult.regularMarketPrice.raw;
-            this.outstandingShares = thirdResult.sharesOutstanding.raw;
-
-        },
-        async fourthApiCall() {
-            const fourthApiUrl = this.keyStatsUrl + this.symbol;
-            const fourthResponse = await fetch(fourthApiUrl, this.options);
-            const fourthResult = await fourthResponse.json();
-            try {
-                this.peRatio = fourthResult.trailingPE.raw;
-            } catch {
-                this.peRatio = 0;
-            }
-        },
+        
         calculateMultiple() {
             this.enterpriseValue = this.outstandingShares * this.stockPrice;
             this.valueMultiple = this.enterpriseValue / this.ebitda;
@@ -158,17 +141,13 @@ export default {
                 try {
                     let stockUrl = "https://axlstockapi.azurewebsites.net/stock/price/" + element.symbol;
 
-
                     const priceApiResponse = await fetch(stockUrl, this.options2);
                     const priceApiResult = await priceApiResponse.json();
 
                     let updatedPrice = priceApiResult.googlePriceData.marketPrice;
 
-
                     element.stockPrice = updatedPrice;
                     
-                    console.log(updatedPrice);
-
                 } catch (error) {
                     console.error('Error fetching price data:', error);
                 }
