@@ -1,3 +1,7 @@
+html{
+  background-color: black;
+  color: white;
+}
 .main-container {
   text-align: center;
 }
@@ -42,12 +46,11 @@
 
 .watchlist-list {
   list-style: none;
-  border-bottom: 1px solid black;
   margin-bottom: 2px;
 }
 
-.watchlist-list button { 
-  
+.watchlist-list button {
+
   background: none;
   border: none;
 }
@@ -100,14 +103,16 @@
 .stock-details,
 .analysts-opinion,
 .watchlist {
-  border: 1px solid black;
+  border: 2px solid;
+  border-image: linear-gradient(to right, #ff8a00, #e52e71);
+  border-image-slice: 1;
   padding-bottom: 35px;
 }
 
 .bar-chart {
   position: relative;
   height: 40px;
-  background-color: lightgray;
+  background-color: rgb(157, 157, 157);
   margin-top: 20px;
   width: 1000px;
 
@@ -145,4 +150,35 @@
   top: 50%;
   font-size: 13px;
   font-weight: bold;
+}
+
+@media (max-width: 450px) {
+  .data-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bar-chart {
+    display: none;
+  }
+
+  .search label,
+  .search input,
+  .search button {
+    margin-right: 2px;
+    margin-left: 2px;
+  }
+  .watchlist-button{
+    margin-top: 5px;
+  }
+  .watchlist {
+    max-height: 105px;
+    overflow-y: auto;
+  }
+}
+@media (max-width: 850px) {
+  .bar-chart {
+    width: 90%;
+  }
 }
