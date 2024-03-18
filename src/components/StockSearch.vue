@@ -146,4 +146,4 @@
 
 <style scoped>
 @import '../assets/css/StockSearch.css';
-</style>
+</style>../StockSearch.js../StockSearch.js

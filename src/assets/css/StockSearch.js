@@ -1,6 +1,6 @@
 export default {
     data() {
-        const apiKey = '868c0c8721msh6a1ce74715ec254p133b1cjsn70daf7be0daf';
+        const apiKey = process.env.VUE_APP_API_KEY;
 
         const options = {
             method: 'GET',
